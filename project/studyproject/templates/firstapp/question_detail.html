@@ -1,6 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- 상속 전 코드
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+-->
     <!-- 인터프리터 형식이기 때문에 되돌아온 값을 표시하려면 입력 Form보다 위에 위치해야함. -->
+
 <div class="container my-3">
     <h2 class="border-bottom py-2">{{ question.subject }}</h2>
     <div class="card my-3">
@@ -41,4 +46,4 @@
         <input type="submit" value="답변 등록" class="btn btn-primary">
     </form>
 </div>
-
+{% endblock %}
