@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from .models import Question
 from django.utils import  timezone
+from .forms import QuestionForm
 
 def index(request) :
     """
@@ -34,4 +35,21 @@ def answer_create(request, question_id) :
                                create_date=timezone.now())
     #등록 후 등록한 값을 포함하여 되돌아가기 (표시하는 코드는 HTML파일에서)
     return redirect('firstapp:detail', question_id=question_id)
+
+def question_create(request) :
+    """
+    firstapp 질문 등록
+    """
+    # 입력데이터 저장 코드
+    if request.method == 'POST' :
+        form = QuestionForm(request.POST)
+        if form.is_valid() :
+            question = form.save(commit=False)
+            question.create_date = timezone.now()
+            question.save()
+            return  redirect('firstapp:index')
+    else :
+        form = QuestionForm()
+    context = {'form' : form}
+    return render(request, 'firstapp/question_form.html', context)
 # Create your views here.
