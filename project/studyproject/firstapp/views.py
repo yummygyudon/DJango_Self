@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from .models import Question
 from django.utils import  timezone
-from .forms import QuestionForm
+from .forms import QuestionForm, AnswerForm
 
 def index(request) :
     """
@@ -25,16 +25,30 @@ def answer_create(request, question_id) :
     firstapp 답변 등록
     """
     question = get_object_or_404(Question, pk=question_id)
+
+    if request.method == "POST" :
+        form = AnswerForm(request.POST)
+        if form.is_valid():
+            answer = form.save(commit=False)
+            answer.create_date = timezone.now()
+            answer.question = question
+            answer.save()
+            return redirect('firstapp:detail', question_id=question_id)
+    else :
+        form = AnswerForm()
+    context = {'question' : question, 'form' : form}
+    return render(request, 'firstapp/question_detail.html', context)
+
     #방법1_Answer모델을 통해 데이터 저장
     '''
     answer = Answer(question=question, content=request.POST.get('content'), create_date=timezone.now())
     answer.save()
     '''
-    #방법2
-    question.answer_set.create(content=request.POST.get('content'),
-                               create_date=timezone.now())
-    #등록 후 등록한 값을 포함하여 되돌아가기 (표시하는 코드는 HTML파일에서)
-    return redirect('firstapp:detail', question_id=question_id)
+    # #방법2
+    # question.answer_set.create(content=request.POST.get('content'),
+    #                            create_date=timezone.now())
+    # #등록 후 등록한 값을 포함하여 되돌아가기 (표시하는 코드는 HTML파일에서)
+    # return redirect('firstapp:detail', question_id=question_id)
 
 def question_create(request) :
     """

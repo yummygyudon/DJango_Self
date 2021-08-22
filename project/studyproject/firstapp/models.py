@@ -18,4 +18,5 @@ class Answer(models.Model) :
     #작성 일시
     create_date = models.DateTimeField()
 
+
 # Create your models here.
