@@ -3,13 +3,23 @@ from django.http import HttpResponse
 from .models import Question
 from django.utils import  timezone
 from .forms import QuestionForm, AnswerForm
+from django.core.paginator import Paginator
 
 def index(request) :
     """
     firstapp 목록 출력
     """
+    # 입력 인자
+    page = request.GET.get('page','1') #페이지
+
+    #조회
     question_list = Question.objects.order_by('-create_date')
-    context = {'question_list' : question_list}
+
+    #페이지 처리
+    paginator = Paginator(question_list, 10) # 페이지당 10개씩 보기 설정
+    page_obj = paginator.get_page(page)
+
+    context = {'question_list' : page_obj} #paginator를 통해 페이지 번호와 보기 개수까지 받기
     return render(request, 'firstapp/question_list.html', context)
 
 def detail(request, question_id) :
