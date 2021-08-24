@@ -20,4 +20,6 @@ from firstapp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('firstapp/', include('firstapp.urls')),
+    path('account/', include('account.urls')),
+    path('',views.index, name='index'), # / 페이지에 해당하는 urlpattern
 ]

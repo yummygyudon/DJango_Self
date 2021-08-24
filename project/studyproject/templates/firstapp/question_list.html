@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load firstapp_filter %}
 {% block content %}
 <!-- 상속 전 코드
 {% load static %}
@@ -18,7 +19,7 @@
         {% if question_list %}
         {% for question in question_list %}
         <tr>
-            <td>{{ forloop.counter }}</td>
+            <td>{{ question_list.paginator.count|sub:question_list.start_index|sub:forloop.counter0|add:1 }}</td>
             <td>
                 <a href="{% url 'firstapp:detail' question.id %}">
                     {{ question.subject }}
