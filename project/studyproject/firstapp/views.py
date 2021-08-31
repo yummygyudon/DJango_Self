@@ -120,10 +120,11 @@ def question_delete(request, question_id) :
     question.delete()
     return redirect('firstapp:index')
 
+
 @login_required(login_url='account:login')
 def answer_modify(request, answer_id) :
     """
-    앱 질문 수정
+    앱 답변 수정
     """
     answer = get_object_or_404(Answer, pk=answer_id)
     if request.user != answer.author:
@@ -133,13 +134,25 @@ def answer_modify(request, answer_id) :
     if request.method == "POST":
         form = AnswerForm(request.POST, instance=answer)
         if form.is_valid():
-            question = form.save(commit=False)
-            question.author = request.user
-            question.modify_date = timezone.now() #수정 일시 저장
-            question.save()
-            return redirect('firstapp:detail', question_id = question_id)
+            answer = form.save(commit=False)
+            answer.author = request.user
+            answer.modify_date = timezone.now() #수정 일시 저장
+            answer.save()
+            return redirect('firstapp:detail', question_id = answer.question.id)
     else:
-        form = QuestionForm(instance=question)
-    context = {'form': form}
-    return render(request, 'firstapp/question_form.html', context)
+        form = AnswerForm(instance=answer)
+    context = {'answer':answer,'form': form}
+    return render(request, 'firstapp/answer_form.html', context)
+
+@login_required(login_url='account:login')
+def answer_delete(request, answer_id) :
+    """
+    답변 삭제
+    """
+    answer = get_object_or_404(Answer, pk=answer_id)
+    if request.user != answer.author:
+        messages.error(request, '삭제권한 없음')
+    else :
+        answer.delete()
+    return redirect('firstapp:detail', question_id=answer.question.id)
 # Create your views here.
