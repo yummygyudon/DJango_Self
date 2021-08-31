@@ -10,6 +10,8 @@ class Question(models.Model) :
     content = models.TextField()
     #작성 일시
     create_date = models.DateTimeField()
+    #수정 일시
+    modify_date = models.DateTimeField(null=True, blank=True)
     def __str__(self):
         return self.subject
 
@@ -22,6 +24,8 @@ class Answer(models.Model) :
     content = models.TextField()
     #작성 일시
     create_date = models.DateTimeField()
+    #수정 일시
+    modify_date = models.DateTimeField(null=True, blank=True)
 
 
 # Create your models here.
