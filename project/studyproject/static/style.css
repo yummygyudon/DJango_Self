@@ -1,3 +1,7 @@
+.comment {
+    border-top : dotted 1px #ddd;
+    font-size : 0.7em;
+}
 /* 초기 CSS 스타일
 textarea {
     width:100%;
