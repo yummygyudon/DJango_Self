@@ -3,7 +3,8 @@ from django.contrib.auth.models import User
 
 class Question(models.Model) :
     #계정/사용자명
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE,
+                               related_name='author_question')
     #질문의 제목
     subject = models.CharField(max_length=200)
     #질문의 내용
@@ -12,12 +13,16 @@ class Question(models.Model) :
     create_date = models.DateTimeField()
     #수정 일시
     modify_date = models.DateTimeField(null=True, blank=True)
+    #추천
+    voter = models.ManyToManyField(User,
+                                   related_name='voter_questiion')
     def __str__(self):
         return self.subject
 
 class Answer(models.Model) :
     # 계정/사용자명
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE,
+                               related_name='author_answer')
     #특정 질문의 답변
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     #답변의 내용
@@ -26,6 +31,10 @@ class Answer(models.Model) :
     create_date = models.DateTimeField()
     #수정 일시
     modify_date = models.DateTimeField(null=True, blank=True)
+    #추천
+    voter = models.ManyToManyField(User,
+                                   related_name='voter_answer')
+
 
 class Comment(models.Model) :
     author = models.ForeignKey(User, on_delete=models.CASCADE)
