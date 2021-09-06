@@ -11,13 +11,13 @@
         <div class="col-2">
             <select class="form-control sort">
                 <!--tag 입력 효과 없다고 작동 안될거라는 편협한 생각을 버려야함_작동 잘됨-->
-                <option value="recent" {% if sort == 'recent' %}selected{% endif %}>
+                <option value="recent" {% if sort == 'recent' %} selected {% endif %}>
                     최신순
                 </option>
-                <option value="recommend" {% if sort == 'recommend' %}selected{% endif %}>
+                <option value="recommend" {% if sort == 'recommend' %} selected {% endif %}>
                     추천순
                 </option>
-                <option value="popular" {% if sort == "popular" %}selected{% endif %}>
+                <option value="popular" {% if sort == "popular" %} selected {% endif %}>
                     인기순
                 </option>
             </select>
@@ -140,7 +140,7 @@
     <form id="searchForm" method="get" action="{% url 'index' %}">
         <input type="hidden" id="kw" name="kw" value="{{kw|default_if_none:''}}">
         <input type="hidden" id="page" name="page" value="{{page}}">
-        <input type="hidden" id="sort" name="sort" value="{{ sort }}">
+        <input type="hidden" id="sort" name="sort" value="{{sort}}">
     </form>
     <a href="{% url 'firstapp:question_create' %}" class="btn btn-primary">
         질문 등록하기
@@ -161,7 +161,7 @@
             $("#searchForm").submit();
         });
         $(".sort").on('change', function(){
-            $("#sort").val($(this).val();
+            $("#sort").val($(this).val());
             $("#page").val(1);
             $("#searchForm").submit();
         });
